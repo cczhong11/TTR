@@ -1,0 +1,17 @@
+{
+    "contents" : "\n# This is the server logic for a Shiny web application.\n# You can find out more about building applications with Shiny here:\n#\n# http://shiny.rstudio.com\n#\n\nlibrary(shiny)\nlibrary(ggplot2)\nlibrary(TTR)\nlibrary(MASS)\nshinyServer(function(input, output) {\n    \n  output$distPlot <- renderPlot({\n    con<-file(input$file,\"rt\")\n    readLines(con,7)\n    Att1<-readLines(con,1)#get Attation data\n    result1<-strsplit(substring(Att1,8),\";\")\n    result1<- rapply(result1, function (p) as.numeric(p))\n    close(con = con)\n    # generate bins based on input$bins from ui.R\n    x <- result1\n    ts<-ts(x)\n    \n    ts<-SMA(ts,n=input$time_average)\n    ts<-na.omit(ts)\n    tt<-time(ts)\n    qplot(tt,ts)+geom_line()+geom_smooth(method=\"lm\")\n    \n  })\n  output$dispACF <- renderPlot(\n    {\n      con<-file(input$file,\"rt\")\n      readLines(con,7)\n      Att1<-readLines(con,1)#get Attation data\n      result1<-strsplit(substring(Att1,8),\";\")\n      result1<- rapply(result1, function (p) as.numeric(p))\n      close(con = con)\n      ts<-ts(result1)\n      acf(ts)\n    }\n  )\n\n})\n",
+    "created" : 1444660884857.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3086847264",
+    "id" : "14497CE",
+    "lastKnownWriteTime" : 1445578388,
+    "path" : "E:/mynutcloud/srtp data/R/Rtest/TTR/server.R",
+    "project_path" : "server.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

@@ -9,6 +9,7 @@ library(shiny)
 library(ggplot2)
 library(TTR)
 library(MASS)
+library(markdown)
 shinyUI(fluidPage(
 
   # Application title
@@ -23,13 +24,18 @@ shinyUI(fluidPage(
                   "Number of time average:",
                   min = 1,
                   max = 50,
-                  value = 10)
+                  value = 10),
+      tabsetPanel(
+        tabPanel("Documentation",includeMarkdown("documentation.md"))
+      )
     ),
 
     # Show a plot of the generated distribution
     mainPanel(
       plotOutput("distPlot"),
       plotOutput("dispACF")
+      
     )
+    
   )
 ))
